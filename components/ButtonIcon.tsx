@@ -6,7 +6,7 @@ type Props = React.PropsWithChildren<{
 }>   
 
 
-export default function Button ({children, onPress}:Props){
+export default function ButtonIcon ({children, onPress}:Props){
     return (
         <Pressable onPress={onPress}>
             <View style={styles.container}>

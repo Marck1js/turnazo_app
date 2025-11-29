@@ -13,7 +13,7 @@ type Props = {
     
 }
 
-export default function Schedule({username, date, hour}:Props) {
+export default function NextClientPreview({username, date, hour}:Props) {
     const {dia,mes,number} = date
   return (
     <View style={styles.containerSchedule}>

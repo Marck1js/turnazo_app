@@ -13,6 +13,17 @@ export default function HomeLayout() {
             }}
         >
             
+            <Tabs.Screen name="data" options={{
+                tabBarIcon: ({color, focused}) => (
+                    <Ionicons
+                        name={ focused ? "document-attach-sharp" : "document-lock-outline"}
+                        color={color}
+                        size={24}
+                    />
+                )
+            }} />
+
+
             <Tabs.Screen name="home" options={{
                 tabBarIcon: ({color, focused}) => (
                     <Ionicons

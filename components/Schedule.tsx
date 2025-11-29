@@ -1,82 +1,59 @@
+import { HourAndDescription } from "@/components";
+import { useActividadStore } from "@/stores/activities.store";
 import React from "react";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 
 export default function Schedule() {
+  const actividades = useActividadStore((item) => item.actividades);
 
-
-  const hours = [
-    " 8:00 ",
-    " 8:30 ",
-    " 9:00 ",
-    " 9:30 ",
-    " 10:00 ",
-    " 10:30 ",
-    " 11:00 ",
-    " 11:30 ",
-    " 12:00 ",
-    " 12:30 ",
-    " 13:00 ",
-    " 13:30 ",
-    " 14:00 ",
-    " 14:30 ",
-    " 15:00 ",
-    " 15:30 ",
-    " 16:00 ",
-    " 16:30 ",
-    " 17:00 ",
-    " 17:30 ",
-    " 18:00 ",
-    " 18:30 ",
-  ];
   return (
     <>
-      <View style={style.topInformation}>
+      <View style={styles.topInformation}>
         <Text>Calendario</Text>
         <Text>Noviembe 22</Text>
         <Text>Agenda Hoy</Text>
       </View>
 
-      <View style={style.calendar}>
-        <ScrollView style={{ marginVertical: 5 }}>
-          {hours.map((hour, index) => (
-            <HourAndDescription hour={hour} onPress={()=> console.log(index)} key={index} />
-          ))}
-        </ScrollView>
+      <View style={styles.calendar}>
+        {actividades.length === 0 ? (
+          <View
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          >
+            <Text>No hay turnos en el dia de hoy</Text>
+          </View>
+        ) : (
+          <ScrollView style={{ marginVertical: 5 }}>
+            {actividades.map((actividad) => {
+              const { cliente, horario, tipo, who, id } = actividad;
+              return (
+                <HourAndDescription
+                  horario={horario}
+                  tipo={tipo}
+                  who={who}
+                  cliente={cliente}
+                  onPress={() => console.log(id)}
+                  key={id}
+                />
+              );
+            })}
+          </ScrollView>
+        )}
       </View>
     </>
   );
 }
 
-const HourAndDescription = ({ hour, onPress}: any) => {
-  const names = ['Felipe', 'Lucre','Tati','Jose','Lucas','Roberto', 'Juana', 'Azul', 'Marco', 'Agustina']
-  const cliente = ['Mariana', 'Carolina','Julia', 'Pedro']
-  const jobs = ['Pilate','Musculacion','Funcional']
-
-  return (
-    <Pressable style={style.calendarContainer} onPress={onPress}>
-      <View style={style.calendarHourContainer}>
-        <Text style={[style.calendarHourTextContent]}>{hour}</Text>
-      </View>
-      <View style={style.calendarHourDescriptionContainer}>
-        <View style={style.calendarHourDescription}>
-          <Text>{names[Math.floor(Math.random()* names.length)]}</Text>
-          <Text>{jobs[Math.floor(Math.random()* jobs.length)]}</Text>
-          <Text>con {cliente[Math.floor(Math.random()* cliente.length)]} </Text>
-        </View>
-      </View>
-    </Pressable>
-  );
-};
-
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
   topInformation: {
     flexDirection: "row",
     justifyContent: "space-between",
     marginHorizontal: 10,
   },
   calendar: {
+    minHeight: 100,
     marginTop: 20,
-    height: 400,
+    height: "auto",
+    maxHeight: 400,
     marginHorizontal: 10,
     borderColor: "#e1e1e1",
     borderRadius: 10,
@@ -108,7 +85,6 @@ const style = StyleSheet.create({
     borderTopWidth: 1,
   },
   calendarHourDescription: {
-    // backgroundColor:'#ff0000',
     marginTop: 20,
     marginLeft: 10,
     borderRightWidth: 1,
